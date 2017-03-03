@@ -22,7 +22,7 @@ import { times, map, append, findIndex, whereEq, lensPath, over, last, adjust, m
 import Rects from './components/Rects'
 
 const padNum = num => ('00' + num).slice(-3)
-const imageNames = map(num => `resized${num}.png`, times(padNum, 472))
+const imageNames = map(num => `resized${num}.png`, times(padNum, 742))
 
 export default {
   components: {
