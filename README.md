@@ -1,21 +1,9 @@
-# annotator
+# Image Annotator
 
-> A Vue.js project
+## Setup
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+* Install dependencies: `npm install`
+* Run the development version: `npm run dev`
+* Place images you want to annotate inside of `./static` folder
+* The names of images are hardcoded in `./src/App.vue`. Take a peek at `imageNames` variable
+* The resolution of images is hardcoded. Take a peek at the canvas at `./src/components/Rects.vue`
