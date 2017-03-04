@@ -21,14 +21,41 @@ export default {
 
       ctx.beginPath()
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = 'purple'
-      // ctx.strokeStyle = 'green'
-      ctx.globalAlpha = 0.5
-      this.rects.forEach(({ x1, y1, x2, y2 }) => {
-        ctx.fillRect(x1, y1, (x2 - x1) || 5, (y2 - y1) || 5)
-      })
-
       ctx.stroke()
+
+      this.rects.forEach(({ x1, y1, x2, y2 }) => {
+        if (!x2) {
+          ctx.beginPath()
+          ctx.globalAlpha = 1
+          ctx.strokeStyle = 'yellow'
+          ctx.lineWidth = 2
+
+          ctx.moveTo(x1 - 80, y1)
+          ctx.lineTo(x1 + 80, y1)
+
+          ctx.moveTo(x1, y1 - 80)
+          ctx.lineTo(x1, y1 + 80)
+          ctx.stroke()
+
+          ctx.beginPath()
+          ctx.lineWidth = 1
+          ctx.globalAlpha = 0.5
+          for (let i = 0; i < 9; i++) {
+            ctx.moveTo(x1 - 80 + i * 20, y1 - 80)
+            ctx.lineTo(x1 - 80 + i * 20, y1 + 80)
+
+            ctx.moveTo(x1 - 80, y1 - 80 + i * 20)
+            ctx.lineTo(x1 + 80, y1 - 80 + i * 20)
+          }
+          ctx.stroke()
+        } else {
+          ctx.beginPath()
+          ctx.globalAlpha = 0.5
+          ctx.fillStyle = 'yellow'
+          ctx.fillRect(x1, y1, x2 - x1, y2 - y1)
+          ctx.stroke()
+        }
+      })
     }
   }
 }

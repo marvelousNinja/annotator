@@ -9,6 +9,7 @@
       </div>
       <div class='AnnotatedImage__Rects'>
         <b>Name: {{image.image_path}}</b>
+        <b>Rectangles: {{image.rects.length}}</b>
         <p v-for='rect in image.rects'>
           {{rect}} <button @click='deleteRect(image.image_path, rect)'>Delete</button>
         </p>
@@ -18,16 +19,24 @@
 </template>
 
 <script>
-import { times, map, append, findIndex, whereEq, lensPath, over, last, adjust, merge, without, evolve, min, max, filter, pipe } from 'ramda'
+import { times, map, prepend, findIndex, whereEq, lensPath, over, head, adjust, merge, without, evolve, min, max, filter, pipe } from 'ramda'
 import Rects from './components/Rects'
 
 const padNum = num => ('00' + num).slice(-3)
-const imageNames = map(num => `resized${num}.png`, times(padNum, 742))
+const imageNames = map(num => `resized${num}.png`, times(padNum, 180))
 
 export default {
   components: {
     Rects
   },
+  // TODO AS: Just find out how to rollback later
+  // created () {
+  //   document.onkeydown = (e) => {
+  //     if (e.keyCode === 90 && (e.ctrlKey || e.metaKey)) {
+  //       alert('Ctrl+z')
+  //     }
+  //   }
+  // },
   data () {
     return {
       images: JSON.parse(localStorage.getItem('images')) || map(name => ({
@@ -55,14 +64,14 @@ export default {
       this.$set(this, 'images', over(
         lensPath([index, 'rects']),
         (rects) => {
-          if (last(rects)) {
-            if (last(rects).x2 != null) {
-              return append({ x1: x, y1: y }, rects)
+          if (head(rects)) {
+            if (head(rects).x2 != null) {
+              return prepend({ x1: x, y1: y }, rects)
             } else {
-              return adjust(merge({ x2: x, y2: y }), -1, rects)
+              return adjust(merge({ x2: x, y2: y }), 0, rects)
             }
           } else {
-            return append({ x1: x, y1: y }, rects)
+            return prepend({ x1: x, y1: y }, rects)
           }
         },
         this.images
@@ -131,5 +140,9 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+}
+
+.AnnotatedImage__Image {
+  filter: grayscale(1);
 }
 </style>
