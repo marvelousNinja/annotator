@@ -2,7 +2,7 @@
   <div class='AnnotatedImage'>
     <div class='AnnotatedImage__Wrapper'>
       <img ref='img' class='AnnotatedImage__Image' :src="`./static/${image.image_path}`" />
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width='640' height='480' @dblclick="$emit('rectCreated', $event, image.image_path)">
+      <svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='640' height='480' @dblclick="$emit('rectCreated', $event, image.image_path)">
         <rect v-for='rect in image.rects' v-interactable
           :x="Math.min(rect.x1, rect.x2) || rect.x1"
           :y="Math.min(rect.y1, rect.y2) || rect.y1"

@@ -16,7 +16,7 @@
 
 <script>
 import AnnotatedImage from './components/AnnotatedImage'
-import { concat, times, map, pipe, evolve, filter, min, max, prepend, findIndex, whereEq, lensPath, over, without, add, values, clamp } from 'ramda'
+import { concat, times, map, pipe, evolve, filter, min, max, append, findIndex, whereEq, lensPath, over, without, add, values, clamp, unionWith, eqBy, prop } from 'ramda'
 import axios from 'axios'
 import { debounce } from 'lodash'
 
@@ -29,15 +29,14 @@ export default {
   },
   data () {
     return {
-      images: JSON.parse(localStorage.getItem('images')) || map(name => ({
+      images: unionWith(eqBy(prop('image_path')), JSON.parse(localStorage.getItem('images')), map(name => ({
         image_path: name,
         rects: []
-      }), imageNames),
-      page: 0
+      }), imageNames))
     }
   },
   computed: {
-    visibleImages () { return this.images.slice(0, 10) }
+    visibleImages () { return this.images }
   },
   watch: {
     images: debounce((val) => localStorage.setItem('images', JSON.stringify(val)), 300)
@@ -66,7 +65,7 @@ export default {
 
       this.$set(this, 'images', over(
         lensPath([index, 'rects']),
-        prepend({
+        append({
           x1: clamp(0, 640, x - 20),
           y1: clamp(0, 480, y - 20),
           x2: clamp(0, 640, x + 20),
