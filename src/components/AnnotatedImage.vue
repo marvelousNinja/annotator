@@ -2,7 +2,7 @@
   <div class='AnnotatedImage'>
     <div class='AnnotatedImage__Wrapper'>
       <img ref='img' class='AnnotatedImage__Image' :src="`./static/${image.image_path}`" />
-      <svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='640' height='480' @dblclick="$emit('rectCreated', $event, image.image_path)">
+      <svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='640' height='480' @dblclick.stop="$emit('rectCreated', $event, image.image_path)">
         <rect v-for='rect in image.rects' v-interactable
           :x="Math.min(rect.x1, rect.x2) || rect.x1"
           :y="Math.min(rect.y1, rect.y2) || rect.y1"
@@ -34,7 +34,7 @@ Vue.directive('interactable', {
   inserted: function (el) {
     interact(el)
       .draggable({})
-      .resizable({ edges: { left: true, right: true, bottom: true, top: true }, margin: 4 })
+      .resizable({ edges: { left: true, right: true, bottom: true, top: true }, margin: 8 })
       .on('dragmove', (event) => {
         event.target.dispatchEvent(new CustomEvent('dragmove', { detail: event }))
       })
